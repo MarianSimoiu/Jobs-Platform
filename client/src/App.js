@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
-import FormSuccess from './FormSuccess';
-import RegisterForm from './RegisterForm';
+import FormSuccess from './things/FormSuccess';
+import RegisterForm from './things/RegisterForm';
 
 function App() {
   return (
