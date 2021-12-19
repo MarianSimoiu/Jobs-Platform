@@ -1,23 +1,27 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser')
-const offers = require('./routes/api/offers');
+const express = require('express')
+const dotenv = require('dotenv')
+const userRoutes = require('./routes/userRoutes')
+const connectDB = require("./config/db")
+const { errorHandler, notFound } = require('./middelwares/errorMiddelware')
+const colors = require('colors')
 
-const app = express();
+dotenv.config()
 
-app.use(express.json());
+connectDB()
 
-//DB Config
-const db=require('./config/keys').mongoURI;
+const app = express()
 
-//Connect to Mongo
-mongoose
-    .connect(db)
-    .then(() => console.log('MongoDB Connected...'))
-    .catch(err => console.log(err));
+app.use(express.json())
 
-//Use Routes
-app.use('/api/offers',offers);
+app.use("/api/users", userRoutes)
 
-const port = process.env.PORT || 5000;
-app.listen(port, ()=> console.log(`Server started on port ${port}`));
+app.use(errorHandler)
+app.use(notFound)
+
+const PORT = process.env.PORT || 5000
+
+app.listen(
+    PORT,
+    console.log(
+      `Server running in ${process.env.NODE_ENV} mode on port ${PORT}..`.yellow.bold)
+  )
